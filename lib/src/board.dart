@@ -52,6 +52,8 @@ class Board {
     var x = currentBlock.x;
     var y = currentBlock.y;
 
+    print('key: $key');
+
     switch (key) {
       case 119: // W – поворот фигуры
         rotateBlock();
@@ -67,7 +69,7 @@ class Board {
         if (!isFilledBlock(x + 1, y)) {
           moveBlock(x + 1, y);
         }
-      case 27: // ESC - выход из игры
+      case 4294967323: // ESC - выход из игры
         gameOver();
       case 114: // R - рестарт игры
         resetGame();

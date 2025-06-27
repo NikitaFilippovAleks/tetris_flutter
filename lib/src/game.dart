@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 
 import 'blocks/blocks.dart';
@@ -27,9 +28,14 @@ final class Game {
   Future<void> start() async {
     // Запускаем игровой цикл
     while (!_isGameOver) {
-      nextStep();
-      await Future.delayed(const Duration(milliseconds: 500));
-      onUpdate(); // Вызывается на каждый цикл игры
+      if (!_isPaused) {
+        nextStep();
+        await Future.delayed(const Duration(milliseconds: 500));
+      } else {
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+
+       onUpdate(); // Вызывается на каждый цикл игры
     }
     onGameOver(score.toString());// Вызывается при завершении игры
   }

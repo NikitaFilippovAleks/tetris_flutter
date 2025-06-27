@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '/src/board.dart';
 import '/src/game.dart';
 import 'game_over_modal.dart';
@@ -10,7 +11,7 @@ import 'game_over_modal.dart';
 class _GamePainter extends CustomPainter {
   // Игровое поле
   final List<List<int>> board;
-    // Размер блока
+  // Размер блока
   final double blockSize;
 
   _GamePainter(this.board, this.blockSize);
@@ -22,11 +23,11 @@ class _GamePainter extends CustomPainter {
     for (int i = 0; i < board.length; i++) {
       for (int j = 0; j < board[i].length; j++) {
         Rect rect = Rect.fromLTWH(
-                j * blockSize, 
-                i * blockSize, 
-                blockSize, 
-                blockSize,
-              );
+          j * blockSize,
+          i * blockSize,
+          blockSize,
+          blockSize,
+        );
         switch (board[i][j]) {
           // Отрисовка пустых клеток поля
           case Board.posFree:
@@ -48,10 +49,10 @@ class _GamePainter extends CustomPainter {
 }
 
 class TetrisGame extends StatefulWidget {
- const TetrisGame({super.key});
+  const TetrisGame({super.key});
 
- @override
- State<TetrisGame> createState() => _TetrisGameState();
+  @override
+  State<TetrisGame> createState() => _TetrisGameState();
 }
 
 class _TetrisGameState extends State<TetrisGame> {
@@ -63,9 +64,9 @@ class _TetrisGameState extends State<TetrisGame> {
     // Проверяем, что виджет все еще находится в дереве виджетов
     // Если виджет удален, прерываем выполнение метода
     if (!mounted) return;
-    
+
     // Планируем показ диалога на следующий кадр отрисовки.
-    // Это гарантирует, что диалог появится после полной 
+    // Это гарантирует, что диалог появится после полной
     // инициализации виджета
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Показываем диалоговое окно
@@ -76,17 +77,16 @@ class _TetrisGameState extends State<TetrisGame> {
         barrierDismissible: false,
         // Функция построения содержимого диалога
         builder: (BuildContext context) {
-          // Возвращаем виджет AlertDialog с информацией 
+          // Возвращаем виджет AlertDialog с информацией
           // об окончании игры
           return GameOverModal(
-            scores: scores,
-            onPlayAgain: () {
-              game.restart();
-            },
-            onExit: () {
-              // game.exit();w
-            }
-          );
+              scores: scores,
+              onPlayAgain: () {
+                game.restart();
+              },
+              onExit: () {
+                Navigator.of(context).pop();
+              });
         },
       );
     });
@@ -95,9 +95,11 @@ class _TetrisGameState extends State<TetrisGame> {
   @override
   void initState() {
     super.initState();
-    game = Game(onGameOver: _showGameOverDialog, onUpdate: () {
-      setState(() {});
-    });
+    game = Game(
+        onGameOver: _showGameOverDialog,
+        onUpdate: () {
+          setState(() {});
+        });
     game.start();
   }
 
@@ -106,9 +108,9 @@ class _TetrisGameState extends State<TetrisGame> {
     return Focus(
       autofocus: true,
       onKeyEvent: (FocusNode node, KeyEvent event) {
-          // Обработка нажатий клавиш
-          // Обрабатываем как нажатие, так и удержание клавиши
-          if (event is KeyDownEvent || event is KeyRepeatEvent) {
+        // Обработка нажатий клавиш
+        // Обрабатываем как нажатие, так и удержание клавиши
+        if (event is KeyDownEvent || event is KeyRepeatEvent) {
           game.board.keyboardEventHandler(event.logicalKey.keyId);
           setState(() {});
           return KeyEventResult.handled;
@@ -124,16 +126,16 @@ class _TetrisGameState extends State<TetrisGame> {
             final board = game.board.mainBoard;
             // Вычисляем размер клетки поля
             double blockSize = min(
-                      constraints.maxWidth / board[0].length,
-                      constraints.maxHeight / board.length,
-                    );
+              constraints.maxWidth / board[0].length,
+              constraints.maxHeight / board.length,
+            );
 
             return CustomPaint(
               painter: _GamePainter(board, blockSize),
               size: Size(
-                        board[0].length * blockSize, 
-                        board.length * blockSize,
-                    ),
+                board[0].length * blockSize,
+                board.length * blockSize,
+              ),
             );
           },
         ),

@@ -30,7 +30,7 @@ final class Game {
     while (!_isGameOver) {
       if (!_isPaused) {
         nextStep();
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future.delayed(Duration(milliseconds: (500 / level).round()));
       } else {
         await Future.delayed(const Duration(milliseconds: 500));
       }
@@ -137,7 +137,7 @@ final class Game {
 
     if (!board.isFilledBlock(x, y + 1)) {
       board.moveBlock(x, y + 1);
-    } else {
+    } else { 
       board.clearLine();
       board.savePresentBoardToCpy();
       board.newBlock();

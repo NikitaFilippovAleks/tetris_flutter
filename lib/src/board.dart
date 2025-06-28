@@ -117,14 +117,16 @@ class Board {
     currentBlock = currentBlockNew;
     var x = currentBlock.x;
 
-    // добавляем новый блок на основную доску
+    // добавляем новый блок на основную доску
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        mainBoard[i][x + j] = mainCpy[i][x + j] + currentBlock[i][j];
+        if (x + j >= 0 && x + j < widthBoard && i < heightBoard) {
+          mainBoard[i][x + j] = mainCpy[i][x + j] + currentBlock[i][j];
 
-        // проверка на пересечение
-        if (mainBoard[i][x + j] > 1) {
-          gameOver(); // игра окончена
+          // проверка на пересечение
+          if (mainBoard[i][x + j] > 1) {
+            gameOver(); // игра окончена
+          }
         }
       }
     }
@@ -132,12 +134,19 @@ class Board {
     drawNextBlockHint(nextBlock);
   }
 
+  bool isInBoard(int x, int y, int j, int i) {
+    return x + j >= 0 &&
+        x + j < widthBoard &&
+        y + i >= 0 &&
+        y + i < heightBoard;
+  }
+
   // Метод перемещения фигуры по основной доске
   void moveBlock(int x2, int y2) {
     // убираем фигуру с текущей позиции
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        if (currentBlock.x + j >= 0) {
+        if (isInBoard(currentBlock.x, currentBlock.y, j, i)) {
           mainBoard[currentBlock.y + i][currentBlock.x + j] -=
               currentBlock[i][j];
         }
@@ -150,8 +159,8 @@ class Board {
     // добавляем фигуру на новую позицию
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        // проверка на левый край
-        if (currentBlock.x + j >= 0) {
+        // проверка на левый край, правый край и нижний край
+        if (isInBoard(currentBlock.x, currentBlock.y, j, i)) {
           mainBoard[currentBlock.y + i][currentBlock.x + j] +=
               currentBlock[i][j];
         }
@@ -181,11 +190,13 @@ class Board {
     // Обновляем основную доску
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        // убираем старую фигуру
-        mainBoard[y + i][x + j] -= tmpBlock[i][j];
+        if (isInBoard(x, y, j, i)) {
+          // убираем старую фигуру
+          mainBoard[y + i][x + j] -= tmpBlock[i][j];
 
-        // добавляем новую фигуру
-        mainBoard[y + i][x + j] += currentBlock[i][j];
+          // добавляем новую фигуру
+          mainBoard[y + i][x + j] += currentBlock[i][j];
+        }
       }
     }
 
@@ -197,18 +208,18 @@ class Board {
     for (int j = 0; j <= heightBoard - 2; j++) {
       // проверка заполненности строки
       int i = 1;
-      while (i <= widthBoard - 3) {
+      while (i <= widthBoard - 2) {
         if (mainBoard[j][i] == posFree) {
           break;
         }
         i++;
       }
 
-      if (i == widthBoard - 2) {
+      if (i == widthBoard - 1) {
         // если строка заполнена
         // очистка строки и сдвиг строк игровой доски вниз
         for (int k = j; k > 0; k--) {
-          for (int idx = 1; idx <= widthBoard - 3; idx++) {
+          for (int idx = 1; idx <= widthBoard - 1; idx++) {
             mainBoard[k][idx] = mainBoard[k - 1][idx];
           }
         }
@@ -222,8 +233,10 @@ class Board {
   bool isFilledBlock(int x2, int y2) {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        if (currentBlock[i][j] != 0 && mainCpy[y2 + i][x2 + j] != 0) {
-          return true;
+        if (isInBoard(x2, y2, j, i)) {
+          if (currentBlock[i][j] != 0 && mainCpy[y2 + i][x2 + j] != 0) {
+            return true;
+          }
         }
       }
     }

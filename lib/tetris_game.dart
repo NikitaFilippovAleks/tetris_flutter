@@ -121,23 +121,55 @@ class _TetrisGameState extends State<TetrisGame> {
       child: Align(
         alignment: Alignment.center,
         // Получаем размеры виджета
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final board = game.board.mainBoard;
-            // Вычисляем размер клетки поля
-            double blockSize = min(
-              constraints.maxWidth / board[0].length,
-              constraints.maxHeight / board.length,
-            );
-
-            return CustomPaint(
-              painter: _GamePainter(board, blockSize),
-              size: Size(
-                board[0].length * blockSize,
-                board.length * blockSize,
+        child: SizedBox(
+          width: 300,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  border:
+                      Border(bottom: BorderSide(color: Colors.red, width: 2)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    spacing: 10,
+                    children: [
+                      Text(
+                        'Score: ${game.score}',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      Text(
+                        'Level: ${game.level}',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            );
-          },
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final board = game.board.mainBoard;
+                  // Вычисляем размер клетки поля
+                  double blockSize = min(
+                    constraints.maxWidth / board[0].length,
+                    constraints.maxHeight / board.length,
+                  );
+
+                  return CustomPaint(
+                    painter: _GamePainter(board, blockSize),
+                    size: Size(
+                      board[0].length * blockSize,
+                      board.length * blockSize,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

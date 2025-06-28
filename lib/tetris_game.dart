@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import '/src/board.dart';
 import '/src/game.dart';
 import 'game_over_modal.dart';
+import 'tetris_header.dart';
 
 // Класс отрисовки игрового поля
 class _GamePainter extends CustomPainter {
@@ -128,30 +129,17 @@ class _TetrisGameState extends State<TetrisGame> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  border:
-                      Border(bottom: BorderSide(color: Colors.red, width: 2)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    spacing: 10,
-                    children: [
-                      Text(
-                        'Score: ${game.score}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        'Level: ${game.activeLevel}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              TetrisHeader(
+                  score: game.score,
+                  level: game.activeLevel,
+                  nextBlockRenderer: (size) {
+                    double blockSize = size.width / 4;
+                    return CustomPaint(
+                      painter:
+                          _GamePainter(game.nextBlock.blockData, blockSize),
+                      size: size,
+                    );
+                  }),
               LayoutBuilder(
                 builder: (context, constraints) {
                   final board = game.board.mainBoard;

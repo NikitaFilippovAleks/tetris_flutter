@@ -6,9 +6,12 @@ base class Block {
   List<List<int>> _block = List.generate(4, (index) => List.filled(4, 0));
 
   Block(this._block, [this._x = 4, this._y = 0]);
-  
+
   int get x => _x;
   int get y => _y;
+
+  // Getter для доступа к данным блока для отрисовки
+  List<List<int>> get blockData => _block;
 
   // Метод перемещения фигуры
   void move(int x, int y) {

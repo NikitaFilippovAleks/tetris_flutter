@@ -49,7 +49,8 @@ class _GamePainter extends CustomPainter {
 }
 
 class TetrisGame extends StatefulWidget {
-  const TetrisGame({super.key});
+  final int level;
+  const TetrisGame({super.key, required this.level});
 
   @override
   State<TetrisGame> createState() => _TetrisGameState();
@@ -96,6 +97,7 @@ class _TetrisGameState extends State<TetrisGame> {
   void initState() {
     super.initState();
     game = Game(
+        level: widget.level,
         onGameOver: _showGameOverDialog,
         onUpdate: () {
           setState(() {});
@@ -143,7 +145,7 @@ class _TetrisGameState extends State<TetrisGame> {
                         style: const TextStyle(color: Colors.white),
                       ),
                       Text(
-                        'Level: ${game.level}',
+                        'Level: ${game.activeLevel}',
                         style: const TextStyle(color: Colors.white),
                       ),
                     ],

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:ui';
 
 import 'blocks/blocks.dart';
@@ -12,13 +11,15 @@ final class Game {
   bool _isGameOver = false;
   bool _isPaused = false;
   int score = 0;
-  int level = 1;
+  late int activeLevel;
+  int level;
   VoidCallback onUpdate;
 
   // Обратный вызов при окончании игры
   final Function(String scores) onGameOver;
 
-  Game({required this.onGameOver, required this.onUpdate}) {
+  Game({required this.onGameOver, required this.onUpdate, required this.level}) {
+    activeLevel = level;
     requestDifficultyLevel();
     keyboardEventHandler();
     initBoard();
@@ -30,14 +31,14 @@ final class Game {
     while (!_isGameOver) {
       if (!_isPaused) {
         nextStep();
-        await Future.delayed(Duration(milliseconds: (500 / level).round()));
+        await Future.delayed(Duration(milliseconds: (500 / activeLevel).round()));
       } else {
         await Future.delayed(const Duration(milliseconds: 500));
       }
 
-       onUpdate(); // Вызывается на каждый цикл игры
+      onUpdate(); // Вызывается на каждый цикл игры
     }
-    onGameOver(score.toString());// Вызывается при завершении игры
+    onGameOver(score.toString()); // Вызывается при завершении игры
   }
 
   // // Метод запуска игры
@@ -80,8 +81,8 @@ final class Game {
     score += 10;
 
     // увеличение уровня
-    int newLevel = score ~/ 20;
-    level = newLevel == 0 ? 1 : newLevel;
+    int newLevel = activeLevel + score ~/ 20;
+    activeLevel = newLevel == 0 ? 1 : newLevel;
   }
 
   // Метод генерации новой фигуры
@@ -113,6 +114,7 @@ final class Game {
       // ....
       _isGameOver = false;
       score = 0;
+      activeLevel = level;
       initBoard();
       start();
     }
@@ -137,7 +139,7 @@ final class Game {
 
     if (!board.isFilledBlock(x, y + 1)) {
       board.moveBlock(x, y + 1);
-    } else { 
+    } else {
       board.clearLine();
       board.savePresentBoardToCpy();
       board.newBlock();

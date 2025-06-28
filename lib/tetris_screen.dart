@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'tetris_game.dart';
 
 class TetrisScreen extends StatelessWidget {
-  const TetrisScreen({super.key});
+  final int level;
+  const TetrisScreen({super.key, required this.level});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: TetrisGame(),
+    return Scaffold(
+      body: TetrisGame(level: level),
     );
   }
 }

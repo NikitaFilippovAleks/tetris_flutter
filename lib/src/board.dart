@@ -76,6 +76,8 @@ class Board {
       case 32: // Space - пауза
         pauseGame();
     }
+
+    updateBlock(currentBlock);
   }
 
   // сохранение текущего состояния игрового поля

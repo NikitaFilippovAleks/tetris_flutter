@@ -70,7 +70,7 @@ class _TetrisGameState extends State<TetrisGame> {
     // Планируем показ диалога на следующий кадр отрисовки.
     // Это гарантирует, что диалог появится после полной
     // инициализации виджета
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
       // Показываем диалоговое окно
       showDialog(
         // Передаем контекст для правильного позиционирования диалога
@@ -91,74 +91,74 @@ class _TetrisGameState extends State<TetrisGame> {
               });
         },
       );
-    });
+    // });
   }
 
   @override
   void initState() {
     super.initState();
     game = Game(
-        level: widget.level,
-        onGameOver: _showGameOverDialog,
-        onUpdate: () {
-          setState(() {});
-        });
+      level: widget.level,
+      onGameOver: _showGameOverDialog,
+    );
     game.start();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
-      autofocus: true,
-      onKeyEvent: (FocusNode node, KeyEvent event) {
-        // Обработка нажатий клавиш
-        // Обрабатываем как нажатие, так и удержание клавиши
-        if (event is KeyDownEvent || event is KeyRepeatEvent) {
-          game.board.keyboardEventHandler(event.logicalKey.keyId);
-          setState(() {});
-          return KeyEventResult.handled;
-        }
-        // Если событие не обработано, возвращаем ignored
-        return KeyEventResult.ignored;
-      },
-      child: Align(
-        alignment: Alignment.center,
-        // Получаем размеры виджета
-        child: SizedBox(
-          width: 300,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TetrisHeader(
-                  score: game.score,
-                  level: game.activeLevel,
-                  nextBlockRenderer: (size) {
-                    double blockSize = size.width / 4;
-                    return CustomPaint(
-                      painter:
-                          _GamePainter(game.nextBlock.blockData, blockSize),
-                      size: size,
+    return ListenableBuilder(
+      listenable: game,
+      builder: (_, __) => Focus(
+        autofocus: true,
+        onKeyEvent: (FocusNode node, KeyEvent event) {
+          // Обработка нажатий клавиш
+          // Обрабатываем как нажатие, так и удержание клавиши
+          if (event is KeyDownEvent || event is KeyRepeatEvent) {
+            game.board.keyboardEventHandler(event.logicalKey.keyId);
+            return KeyEventResult.handled;
+          }
+          // Если событие не обработано, возвращаем ignored
+          return KeyEventResult.ignored;
+        },
+        child: Align(
+          alignment: Alignment.center,
+          // Получаем размеры виджета
+          child: SizedBox(
+            width: 300,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TetrisHeader(
+                    score: game.score,
+                    level: game.activeLevel,
+                    nextBlockRenderer: (size) {
+                      double blockSize = size.width / 4;
+                      return CustomPaint(
+                        painter:
+                            _GamePainter(game.nextBlock.blockData, blockSize),
+                        size: size,
+                      );
+                    }),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final board = game.board.mainBoard;
+                    // Вычисляем размер клетки поля
+                    double blockSize = min(
+                      constraints.maxWidth / board[0].length,
+                      constraints.maxHeight / board.length,
                     );
-                  }),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final board = game.board.mainBoard;
-                  // Вычисляем размер клетки поля
-                  double blockSize = min(
-                    constraints.maxWidth / board[0].length,
-                    constraints.maxHeight / board.length,
-                  );
-
-                  return CustomPaint(
-                    painter: _GamePainter(board, blockSize),
-                    size: Size(
-                      board[0].length * blockSize,
-                      board.length * blockSize,
-                    ),
-                  );
-                },
-              ),
-            ],
+      
+                    return CustomPaint(
+                      painter: _GamePainter(board, blockSize),
+                      size: Size(
+                        board[0].length * blockSize,
+                        board.length * blockSize,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

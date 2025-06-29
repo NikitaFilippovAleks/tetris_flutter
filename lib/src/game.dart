@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:ui';
+
+import 'package:flutter/material.dart';
 
 import 'blocks/blocks.dart';
 import 'board.dart';
 
-final class Game {
+final class Game extends ChangeNotifier {
   late Board board;
   late Block currentBlock; // текущий блок
   late Block nextBlock; // следующий блок
@@ -13,12 +14,12 @@ final class Game {
   int score = 0;
   late int activeLevel;
   int level;
-  VoidCallback onUpdate;
 
   // Обратный вызов при окончании игры
   final Function(String scores) onGameOver;
 
-  Game({required this.onGameOver, required this.onUpdate, required this.level}) {
+  Game(
+      {required this.onGameOver, required this.level}) {
     activeLevel = level;
     requestDifficultyLevel();
     keyboardEventHandler();
@@ -31,31 +32,15 @@ final class Game {
     while (!_isGameOver) {
       if (!_isPaused) {
         nextStep();
-        await Future.delayed(Duration(milliseconds: (500 / activeLevel).round()));
+        await Future.delayed(
+            Duration(milliseconds: (500 / activeLevel).round()));
       } else {
         await Future.delayed(const Duration(milliseconds: 500));
       }
-
-      onUpdate(); // Вызывается на каждый цикл игры
     }
+    print('Game over');
     onGameOver(score.toString()); // Вызывается при завершении игры
   }
-
-  // // Метод запуска игры
-  // Future<void> start() async {
-  //   // Запускаем игровой цикл
-  //   while (!isGameOver) {
-  //     if (!_isPaused) {
-  //       nextStep();
-  //       printScore();
-  //       await Future.delayed(Duration(milliseconds: (500 / level).round()));
-  //     } else {
-  //       await Future.delayed(const Duration(milliseconds: 500));
-  //     }
-  //   }
-
-  //   // ....
-  // }
 
   void initBoard() {
     currentBlock = getNewRandomBlock();
@@ -74,6 +59,7 @@ final class Game {
   // Метод обновления блока фигуры
   void updateBlock(Block block) {
     currentBlock = block;
+    notifyListeners();
   }
 
   // Метод обновления счета
@@ -83,6 +69,8 @@ final class Game {
     // увеличение уровня
     int newLevel = activeLevel + score ~/ 20;
     activeLevel = newLevel == 0 ? 1 : newLevel;
+
+    notifyListeners();
   }
 
   // Метод генерации новой фигуры
@@ -107,6 +95,7 @@ final class Game {
 
   void gameOver() {
     _isGameOver = true;
+    notifyListeners();
   }
 
   void restart() {
@@ -145,6 +134,8 @@ final class Game {
       board.newBlock();
       board.drawBoard();
     }
+
+    notifyListeners();
   }
 
   // Метод для запроса уровня сложности у пользователя

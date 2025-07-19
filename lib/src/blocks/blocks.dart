@@ -73,6 +73,16 @@ final class ZBlock extends Block {
         ]);
 }
 
+final class ArcBlock extends Block {
+  ArcBlock()
+      : super([
+          [0, 0, 0, 0],
+          [1, 1, 1, 0],
+          [1, 0, 1, 0],
+          [0, 0, 0, 0],
+        ]);
+}
+
 Block getNewRandomBlock() {
   return _defBlocks[Random().nextInt(_defBlocks.length)].copyWith();
 }
@@ -97,4 +107,8 @@ final _defBlocks = [
   ZBlock()..rotate(),
   ZBlock()..rotate()..rotate(),
   ZBlock()..rotate()..rotate()..rotate(),
+  ArcBlock(),
+  ArcBlock()..rotate(),
+  ArcBlock()..rotate()..rotate(),
+  ArcBlock()..rotate()..rotate()..rotate(),
 ];

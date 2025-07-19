@@ -1,14 +1,16 @@
+import 'package:tetris_flutter/src/pixel.dart';
+
 import 'blocks/blocks.dart';
 
 class Board {
   static const int heightBoard = 20;
   static const int widthBoard = 10;
-  static const int posFree = 0;
-  static const int posFilled = 1;
-  static const int posBoarder = 2;
+  static Pixel posFree = FreePixel();
+  // static Pixel posFilled = Pixel(type: PixelType.filled, color: Colors.white);
+  static Pixel posBoarder = BorderPixel();
 
-  late List<List<int>> mainBoard;
-  late List<List<int>> mainCpy;
+  late List<List<Pixel>> mainBoard;
+  late List<List<Pixel>> mainCpy;
 
   // callback-функция для создания нового блока
   (Block, Block) Function() newBlockFunc;
@@ -38,11 +40,11 @@ class Board {
       required this.pauseGame}) {
     mainBoard = List.generate(
       heightBoard,
-      (_) => List.filled(widthBoard, 0),
+      (_) => List.filled(widthBoard, posFree),
     );
     mainCpy = List.generate(
       heightBoard,
-      (_) => List.filled(widthBoard, 0),
+      (_) => List.filled(widthBoard, posFree),
     );
     initDrawMain();
   }
@@ -126,7 +128,7 @@ class Board {
           mainBoard[i][x + j] = mainCpy[i][x + j] + currentBlock[i][j];
 
           // проверка на пересечение
-          if (mainBoard[i][x + j] > 1) {
+          if (mainBoard[i][x + j].type == PixelType.border) {
             gameOver(); // игра окончена
           }
         }
@@ -236,7 +238,8 @@ class Board {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
         if (isInBoard(x2, y2, j, i)) {
-          if (currentBlock[i][j] != 0 && mainCpy[y2 + i][x2 + j] != 0) {
+          if (currentBlock[i][j] != FreePixel() &&
+              mainCpy[y2 + i][x2 + j] != FreePixel()) {
             return true;
           }
         }

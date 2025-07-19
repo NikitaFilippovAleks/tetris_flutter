@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tetris_flutter/main.dart';
+import 'package:tetris_flutter/src/pixel.dart';
 
 import '/src/board.dart';
 import '/src/game.dart';
@@ -12,7 +13,7 @@ import 'tetris_header.dart';
 // Класс отрисовки игрового поля
 class _GamePainter extends CustomPainter {
   // Игровое поле
-  final List<List<int>> board;
+  final List<List<Pixel>> board;
   // Размер блока
   final double blockSize;
 
@@ -30,17 +31,7 @@ class _GamePainter extends CustomPainter {
           blockSize,
           blockSize,
         );
-        switch (board[i][j]) {
-          // Отрисовка пустых клеток поля
-          case Board.posFree:
-            paint.color = Colors.black;
-          // Отрисовка блоков и заполненных клеток поля
-          case Board.posFilled:
-            paint.color = Colors.white;
-          // Отрисовка границ поля
-          case Board.posBoarder:
-            paint.color = Colors.red;
-        }
+        paint.color = board[i][j].color;
         canvas.drawRect(rect, paint);
       }
     }

@@ -1,17 +1,25 @@
 // Базовый класс блока, хранящего в себе игровую фигуру
+import 'package:tetris_flutter/src/pixel.dart';
+
 base class Block {
   int _x;
   int _y;
 
-  List<List<int>> _block = List.generate(4, (index) => List.filled(4, 0));
+  List<List<Pixel>> _block = List.generate(4, (index) => List.filled(4, FreePixel()));
 
-  Block(this._block, [this._x = 4, this._y = 0]);
+  Block({
+    required List<List<Pixel>> block,
+    int x = 4,
+    int y = 0,
+  })  : _block = block,
+        _x = x,
+        _y = y;
 
   int get x => _x;
   int get y => _y;
 
   // Getter для доступа к данным блока для отрисовки
-  List<List<int>> get blockData => _block;
+  List<List<Pixel>> get blockData => _block;
 
   // Метод перемещения фигуры
   void move(int x, int y) {
@@ -21,18 +29,22 @@ base class Block {
 
   // Метод параметризированного копирования фигуры
   Block copyWith({int? xParam, int? yParam}) {
-    List<List<int>> tmp = List.generate(4, (_) => List.filled(4, 0));
+    List<List<Pixel>> tmp = List.generate(4, (_) => List.filled(4, FreePixel()));
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
         tmp[i][j] = _block[i][j];
       }
     }
-    return Block(tmp, xParam ?? _x, yParam ?? _y);
+    return Block(
+      block: tmp,
+      x: xParam ?? _x,
+      y: yParam ?? _y,
+    );
   }
 
   // Метод поворота
   void rotate() {
-    List<List<int>> tmp = List.generate(4, (_) => List.filled(4, 0));
+    List<List<Pixel>> tmp = List.generate(4, (_) => List.filled(4, FreePixel()));
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
         tmp[i][j] = _block[j][3 - i];
@@ -42,7 +54,7 @@ base class Block {
   }
 
   // Оператор индексирования
-  List<int> operator [](int index) {
+  List<Pixel> operator [](int index) {
     return _block[index];
   }
 }

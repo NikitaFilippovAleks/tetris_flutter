@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:tetris_flutter/main.dart';
 
-import 'tetris_screen.dart';
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class MainMenuScreen extends StatefulWidget {
+  const MainMenuScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<MainMenuScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<MainMenuScreen> {
   int _level = 1;
 
   @override
@@ -33,8 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             FilledButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => TetrisScreen(level: _level)));
+                Navigator.pushNamed(context, GameRouter.gameRoute,
+                    arguments: _level);
               },
               child: const Text('Start Game'),
             ),

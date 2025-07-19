@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
+import 'package:tetris_flutter/screens/game_over_screen.dart';
+import 'package:tetris_flutter/screens/game_screen.dart';
+
+import 'screens/main_menu_screen.dart';
+
+part 'game_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,9 +15,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: GameRouter.initialRoute,
+        routes: GameRouter._appRoutes,
     );
   }
 }

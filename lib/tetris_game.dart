@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tetris_flutter/main.dart';
 
 import '/src/board.dart';
 import '/src/game.dart';
@@ -71,26 +72,26 @@ class _TetrisGameState extends State<TetrisGame> {
     // Это гарантирует, что диалог появится после полной
     // инициализации виджета
     // WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Показываем диалоговое окно
-      showDialog(
-        // Передаем контекст для правильного позиционирования диалога
-        context: context,
-        // Запрещаем закрытие диалога при клике вне его области
-        barrierDismissible: false,
-        // Функция построения содержимого диалога
-        builder: (BuildContext context) {
-          // Возвращаем виджет AlertDialog с информацией
-          // об окончании игры
-          return GameOverModal(
-              scores: scores,
-              onPlayAgain: () {
-                game.restart();
-              },
-              onExit: () {
-                Navigator.of(context).pop();
-              });
-        },
-      );
+    // Показываем диалоговое окно
+    showDialog(
+      // Передаем контекст для правильного позиционирования диалога
+      context: context,
+      // Запрещаем закрытие диалога при клике вне его области
+      barrierDismissible: false,
+      // Функция построения содержимого диалога
+      builder: (BuildContext context) {
+        // Возвращаем виджет AlertDialog с информацией
+        // об окончании игры
+        return GameOverModal(
+            scores: scores,
+            onPlayAgain: () {
+              game.restart();
+            },
+            onExit: () {
+              Navigator.of(context).pop();
+            });
+      },
+    );
     // });
   }
 
@@ -99,7 +100,15 @@ class _TetrisGameState extends State<TetrisGame> {
     super.initState();
     game = Game(
       level: widget.level,
-      onGameOver: _showGameOverDialog,
+      onGameOver: (scores) {
+        // Переход на экран окончания игры
+        // Передаем scores в аргументах
+        Navigator.pushReplacementNamed(
+          context,
+          GameRouter.gameOverRoute,
+          arguments: {'scores': scores, 'level': widget.level},
+        );
+      },
     );
     game.start();
   }
@@ -147,7 +156,7 @@ class _TetrisGameState extends State<TetrisGame> {
                       constraints.maxWidth / board[0].length,
                       constraints.maxHeight / board.length,
                     );
-      
+
                     return CustomPaint(
                       painter: _GamePainter(board, blockSize),
                       size: Size(

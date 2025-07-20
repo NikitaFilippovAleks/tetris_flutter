@@ -97,7 +97,7 @@ class _TetrisGameState extends State<TetrisGame> {
         Navigator.pushReplacementNamed(
           context,
           GameRouter.gameOverRoute,
-          arguments: {'scores': scores, 'level': widget.level},
+          arguments: {'scores': scores},
         );
       },
     );

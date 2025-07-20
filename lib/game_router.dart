@@ -11,6 +11,9 @@ abstract final class GameRouter {
   // Маршрут окончания игры
   static const String gameOverRoute = '/game_over';
 
+  // Маршрут настроек
+  static const String settingsRoute = '/settings';
+
   // Маршруты приложения. Объявляются приватными, чтобы 
   // исключить к ним доступ вне навигатора
   static final Map<String, WidgetBuilder> _appRoutes = {
@@ -20,5 +23,7 @@ abstract final class GameRouter {
     gameRoute: (_) => const GameScreen(),
     // Экран окончания игры
     gameOverRoute: (_) => const GameOverScreen(),
+    // Экран настроек
+    settingsRoute: (_) => const SettingsScreen(),
   };
 }

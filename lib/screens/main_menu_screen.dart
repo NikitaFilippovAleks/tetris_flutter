@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tetris_flutter/main.dart';
 
-class MainMenuScreen extends StatefulWidget {
+class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
-
-  @override
-  State<MainMenuScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<MainMenuScreen> {
-  int _level = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +10,19 @@ class _HomeScreenState extends State<MainMenuScreen> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 20,
           children: [
-            Text('Level: $_level'),
-            Slider(
-              min: 1,
-              max: 5,
-              value: _level.toDouble(),
-              label: _level.toString(),
-              onChanged: (double value) {
-                setState(() {
-                  _level = value.toInt();
-                });
+            FilledButton(
+              onPressed: () {
+                Navigator.pushNamed(context, GameRouter.gameRoute);
               },
+              child: const Text('Start Game'),
             ),
             FilledButton(
               onPressed: () {
-                Navigator.pushNamed(context, GameRouter.gameRoute,
-                    arguments: _level);
+                Navigator.pushNamed(context, GameRouter.settingsRoute);
               },
-              child: const Text('Start Game'),
+              child: const Text('Settings'),
             ),
           ],
         ),

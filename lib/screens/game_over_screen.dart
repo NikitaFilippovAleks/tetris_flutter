@@ -12,7 +12,6 @@ class GameOverScreen extends StatelessWidget {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     final scores = int.tryParse(args?['scores']?.toString() ?? '0') ?? 0;
-    final level = int.tryParse(args?['level']?.toString() ?? '0') ?? 0;
 
     return Scaffold(
         body: GameScores(
@@ -22,7 +21,6 @@ class GameOverScreen extends StatelessWidget {
               Navigator.pushReplacementNamed(
                 context,
                 GameRouter.gameRoute,
-                arguments: level,
               );
             }));
   }

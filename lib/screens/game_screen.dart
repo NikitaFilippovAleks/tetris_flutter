@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tetris_flutter/models/settings_model.dart';
 
 import '../tetris_game.dart';
 
@@ -8,11 +9,10 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments;
-    final level = int.tryParse(args.toString()) ?? 0;
+    final settingsModel = SettingsProvider.of(context);
 
     return Scaffold(
-      body: TetrisGame(level: level),
+      body: TetrisGame(level: settingsModel.level),
     );
   }
 }

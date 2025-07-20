@@ -3,47 +3,20 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tetris_flutter/main.dart';
+import 'package:tetris_flutter/src/blocks/blocks.dart';
 import 'package:tetris_flutter/src/pixel.dart';
+import 'package:tetris_flutter/widgets/block_painter.dart';
+import 'package:tetris_flutter/widgets/board_painter.dart';
 
 import '/src/board.dart';
 import '/src/game.dart';
 import 'game_over_modal.dart';
 import 'tetris_header.dart';
 
-// Класс отрисовки игрового поля
-class _GamePainter extends CustomPainter {
-  // Игровое поле
-  final List<List<Pixel>> board;
-  // Размер блока
-  final double blockSize;
-
-  _GamePainter(this.board, this.blockSize);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint();
-
-    for (int i = 0; i < board.length; i++) {
-      for (int j = 0; j < board[i].length; j++) {
-        Rect rect = Rect.fromLTWH(
-          j * blockSize,
-          i * blockSize,
-          blockSize,
-          blockSize,
-        );
-        paint.color = board[i][j].color;
-        canvas.drawRect(rect, paint);
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
-}
-
 class TetrisGame extends StatefulWidget {
   final int level;
-  const TetrisGame({super.key, required this.level});
+  final Set<Block> activeBlocks;
+  const TetrisGame({super.key, required this.level, required this.activeBlocks});
 
   @override
   State<TetrisGame> createState() => _TetrisGameState();
@@ -91,6 +64,7 @@ class _TetrisGameState extends State<TetrisGame> {
     super.initState();
     game = Game(
       level: widget.level,
+      activeBlocks: widget.activeBlocks,
       onGameOver: (scores) {
         // Переход на экран окончания игры
         // Передаем scores в аргументах
@@ -132,12 +106,7 @@ class _TetrisGameState extends State<TetrisGame> {
                     score: game.score,
                     level: game.activeLevel,
                     nextBlockRenderer: (size) {
-                      double blockSize = size.width / 4;
-                      return CustomPaint(
-                        painter:
-                            _GamePainter(game.nextBlock.blockData, blockSize),
-                        size: size,
-                      );
+                      return BlockPainter(game.nextBlock, size);
                     }),
                 LayoutBuilder(
                   builder: (context, constraints) {
@@ -149,7 +118,7 @@ class _TetrisGameState extends State<TetrisGame> {
                     );
 
                     return CustomPaint(
-                      painter: _GamePainter(board, blockSize),
+                      painter: BoardPainter(board, blockSize),
                       size: Size(
                         board[0].length * blockSize,
                         board.length * blockSize,

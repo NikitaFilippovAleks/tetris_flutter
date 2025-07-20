@@ -6,6 +6,7 @@ import 'blocks/blocks.dart';
 import 'board.dart';
 
 final class Game extends ChangeNotifier {
+  final Set<Block> activeBlocks;
   late Board board;
   late Block currentBlock; // текущий блок
   late Block nextBlock; // следующий блок
@@ -19,7 +20,7 @@ final class Game extends ChangeNotifier {
   final Function(String scores) onGameOver;
 
   Game(
-      {required this.onGameOver, required this.level}) {
+      {required this.onGameOver, required this.level, required this.activeBlocks}) {
     activeLevel = level;
     requestDifficultyLevel();
     keyboardEventHandler();
@@ -43,8 +44,8 @@ final class Game extends ChangeNotifier {
   }
 
   void initBoard() {
-    currentBlock = getNewRandomBlock();
-    nextBlock = getNewRandomBlock();
+    currentBlock = getNewRandomBlock(activeBlocks);
+    nextBlock = getNewRandomBlock(activeBlocks);
 
     board = Board(
         currentBlock: currentBlock,
@@ -76,7 +77,7 @@ final class Game extends ChangeNotifier {
   // Метод генерации новой фигуры
   (Block, Block) newBlock() {
     currentBlock = nextBlock;
-    nextBlock = getNewRandomBlock();
+    nextBlock = getNewRandomBlock(activeBlocks);
     return (currentBlock, nextBlock);
   }
 

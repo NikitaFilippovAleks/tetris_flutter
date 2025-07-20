@@ -30,14 +30,15 @@ class Board {
 
   Block currentBlock; // текущий блок с игровой фигурой
 
-  Board(
-      {required this.newBlockFunc,
-      required this.currentBlock,
-      required this.updateScore,
-      required this.updateBlock,
-      required this.gameOver,
-      required this.resetGame,
-      required this.pauseGame}) {
+  Board({
+    required this.newBlockFunc,
+    required this.currentBlock,
+    required this.updateScore,
+    required this.updateBlock,
+    required this.gameOver,
+    required this.resetGame,
+    required this.pauseGame,
+  }) {
     mainBoard = List.generate(
       heightBoard,
       (_) => List.filled(widthBoard, posFree),

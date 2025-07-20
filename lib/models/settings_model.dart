@@ -3,7 +3,7 @@ import 'package:tetris_flutter/src/blocks/blocks.dart';
 
 class SettingsModel extends ChangeNotifier {
   int _level = 1;
-  final Set<Block> _activeBlocks = {};
+  final Set<Block> _activeBlocks = { ...allBlocksTypes };
 
   int get level => _level;
   Set<Block> get activeBlocks => _activeBlocks;
@@ -25,7 +25,8 @@ class SettingsModel extends ChangeNotifier {
 }
 
 class SettingsProvider extends InheritedNotifier<SettingsModel> {
-  const SettingsProvider({super.key, required super.notifier, required super.child});
+  const SettingsProvider(
+      {super.key, required super.notifier, required super.child});
 
   static SettingsModel of(BuildContext context) {
     final SettingsProvider? result =

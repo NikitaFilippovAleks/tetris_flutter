@@ -12,7 +12,10 @@ class GameScreen extends StatelessWidget {
     final settingsModel = SettingsProvider.of(context);
 
     return Scaffold(
-      body: TetrisGame(level: settingsModel.level),
+      body: TetrisGame(
+        level: settingsModel.level,
+        activeBlocks: settingsModel.activeBlocks,
+      ),
     );
   }
 }

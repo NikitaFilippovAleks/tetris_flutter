@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tetris_flutter/models/settings_model.dart';
+import 'package:tetris_flutter/widgets/blocks_selector/blocks_selector.dart';
+import 'package:tetris_flutter/widgets/level_selector.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -12,22 +14,22 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 20,
-          children: [
-            Text('Level: ${settingsModel.level}'),
-            Slider(
-              min: 1,
-              max: 5,
-              value: settingsModel.level.toDouble(),
-              label: settingsModel.level.toString(),
-              onChanged: (double value) {
-                settingsModel.setLevel(value.toInt());
-              },
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LevelSelector(
+                level: settingsModel.level,
+                onLevelChanged: (int level) {
+                  settingsModel.setLevel(level);
+                },
+              ),
+              const SizedBox(height: 20),
+              const BlocksSelector(),
+            ],
+          ),
         ),
       ),
     );

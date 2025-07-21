@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tetris_flutter/models/settings_model.dart';
 
-import '../tetris_game.dart';
+import 'tetris_game.dart';
 
 class GameScreen extends StatelessWidget {
   // final int level;

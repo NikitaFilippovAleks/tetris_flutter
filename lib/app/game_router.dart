@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of '../main.dart';
 
 //  Роутер игры.
 abstract final class GameRouter {

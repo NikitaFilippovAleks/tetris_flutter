@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tetris_flutter/models/settings_model.dart';
-import 'package:tetris_flutter/screens/game_over_screen.dart';
-import 'package:tetris_flutter/screens/game_screen.dart';
-import 'package:tetris_flutter/screens/settings_screen.dart';
+import 'package:tetris_flutter/features/game_over/game_over_screen.dart';
+import 'package:tetris_flutter/features/game/game_screen.dart';
+import 'package:tetris_flutter/features/settings/settings_screen.dart';
 
-import 'screens/main_menu_screen.dart';
+import 'features/main_menu/main_menu_screen.dart';
 
-part 'game_router.dart';
+part 'app/game_router.dart';
 
 void main() {
   runApp(const MyApp());

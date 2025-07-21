@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tetris_flutter/models/settings_model.dart';
-import 'package:tetris_flutter/widgets/blocks_selector/blocks_selector.dart';
-import 'package:tetris_flutter/widgets/level_selector.dart';
+import 'package:tetris_flutter/features/settings/widgets/blocks_selector/blocks_selector.dart';
+import 'package:tetris_flutter/features/settings/widgets/level_selector.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

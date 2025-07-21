@@ -10,7 +10,7 @@ import 'package:tetris_flutter/widgets/board_painter.dart';
 
 import '/src/board.dart';
 import '/src/game.dart';
-import 'game_over_modal.dart';
+import '../game_over/game_over_modal.dart';
 import 'tetris_header.dart';
 
 class TetrisGame extends StatefulWidget {

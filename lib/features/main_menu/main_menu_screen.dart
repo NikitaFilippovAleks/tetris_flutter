@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tetris_flutter/main.dart';
+import 'package:tetris_flutter/app/game_router.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -14,7 +14,7 @@ class MainMenuScreen extends StatelessWidget {
           children: [
             FilledButton(
               onPressed: () {
-                Navigator.pushNamed(context, GameRouter.gameRoute);
+                Navigator.pushNamed(context, GameRouter.userRoute);
               },
               child: const Text('Start Game'),
             ),
@@ -23,6 +23,12 @@ class MainMenuScreen extends StatelessWidget {
                 Navigator.pushNamed(context, GameRouter.settingsRoute);
               },
               child: const Text('Settings'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pushNamed(context, GameRouter.leaderboardRoute);
+              },
+              child: const Text('Leaderboard'),
             ),
           ],
         ),

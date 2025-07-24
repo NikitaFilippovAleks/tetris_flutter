@@ -1,4 +1,4 @@
-import 'package:tetris_flutter/src/pixel.dart';
+import 'package:tetris_flutter/features/game/src/pixel.dart';
 
 import 'blocks/blocks.dart';
 

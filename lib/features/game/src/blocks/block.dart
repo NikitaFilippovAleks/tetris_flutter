@@ -1,5 +1,5 @@
 // Базовый класс блока, хранящего в себе игровую фигуру
-import 'package:tetris_flutter/src/pixel.dart';
+import 'package:tetris_flutter/features/game/src/pixel.dart';
 
 base class Block {
   int _x;

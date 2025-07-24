@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tetris_flutter/models/settings_model.dart';
-import 'package:tetris_flutter/src/blocks/blocks.dart';
-import 'package:tetris_flutter/widgets/block_painter.dart';
+import 'package:tetris_flutter/features/game/src/blocks/blocks.dart';
+import 'package:tetris_flutter/shared/block_painter.dart';
 
 part 'block_item.dart';
 

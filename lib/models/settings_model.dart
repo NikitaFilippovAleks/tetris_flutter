@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tetris_flutter/src/blocks/blocks.dart';
+import 'package:tetris_flutter/features/game/src/blocks/blocks.dart';
 
 class SettingsModel extends ChangeNotifier {
   int _level = 1;

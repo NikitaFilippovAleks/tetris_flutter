@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tetris_flutter/src/blocks/block.dart';
-import 'package:tetris_flutter/widgets/board_painter.dart';
+import 'package:tetris_flutter/features/game/src/blocks/block.dart';
+import 'package:tetris_flutter/shared/board_painter.dart';
 
 class BlockPainter extends StatelessWidget {
   final Block blockData;

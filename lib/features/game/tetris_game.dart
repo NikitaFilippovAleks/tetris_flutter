@@ -2,21 +2,22 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tetris_flutter/main.dart';
-import 'package:tetris_flutter/src/blocks/blocks.dart';
-import 'package:tetris_flutter/src/pixel.dart';
-import 'package:tetris_flutter/widgets/block_painter.dart';
-import 'package:tetris_flutter/widgets/board_painter.dart';
+import 'package:tetris_flutter/app/context_ext.dart';
+import 'package:tetris_flutter/app/game_router.dart';
+import 'package:tetris_flutter/app/utils.dart';
+import 'package:tetris_flutter/features/game/src/blocks/blocks.dart';
+import 'package:tetris_flutter/shared/block_painter.dart';
+import 'package:tetris_flutter/shared/board_painter.dart';
 
-import '/src/board.dart';
-import '/src/game.dart';
-import '../game_over/game_over_modal.dart';
+import 'game_over_modal.dart';
+import 'src/game.dart';
 import 'tetris_header.dart';
 
 class TetrisGame extends StatefulWidget {
   final int level;
   final Set<Block> activeBlocks;
-  const TetrisGame({super.key, required this.level, required this.activeBlocks});
+  const TetrisGame(
+      {super.key, required this.level, required this.activeBlocks});
 
   @override
   State<TetrisGame> createState() => _TetrisGameState();
@@ -71,8 +72,9 @@ class _TetrisGameState extends State<TetrisGame> {
         Navigator.pushReplacementNamed(
           context,
           GameRouter.gameOverRoute,
-          arguments: {'scores': scores},
         );
+        context.di.userCubit
+            .setScores(Utils.getUsername(context), int.tryParse(scores) ?? 0);
       },
     );
     game.start();

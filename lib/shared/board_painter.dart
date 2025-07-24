@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tetris_flutter/src/pixel.dart';
+import 'package:tetris_flutter/features/game/src/pixel.dart';
 
 // Класс отрисовки игрового поля
 class BoardPainter extends CustomPainter {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tetris_flutter/app/utils.dart';
 
 class TetrisHeader extends StatelessWidget {
   final int score;
@@ -22,15 +23,32 @@ class TetrisHeader extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
-          spacing: 10,
           children: [
-            Text(
-              'Score: $score',
-              style: const TextStyle(color: Colors.white),
-            ),
-            Text(
-              'Level: $level',
-              style: const TextStyle(color: Colors.white),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  spacing: 10,
+                  children: [
+                    Text(
+                      'Score: $score',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      'Level: $level',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Username: ${Utils.getUsername(context)}',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ],
+                )
+              ],
             ),
             const Spacer(),
             Container(

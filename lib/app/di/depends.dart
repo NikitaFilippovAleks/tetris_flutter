@@ -1,13 +1,13 @@
+import 'package:tetris_flutter/app/db/database.dart';
 import 'package:tetris_flutter/app/http/base_http_client.dart';
 import 'package:tetris_flutter/app/http/i_http_client.dart';
-import 'package:tetris_flutter/app/storage/i_storage_service.dart';
-import 'package:tetris_flutter/app/storage/storage_service.dart';
+import 'package:tetris_flutter/features/user/data/local/user_local_repo.dart';
 
+import '../../features/leaderboard/data/leaderboard_repository.dart';
+import '../../features/leaderboard/domain/i_leaderboard_repository.dart';
 import '../../features/user/data/user_repository.dart';
 import '../../features/user/domain/i_user_repository.dart';
 import '../../features/user/domain/state/user_cubit.dart';
-import '../../features/leaderboard/data/leaderboard_repository.dart';
-import '../../features/leaderboard/domain/i_leaderboard_repository.dart';
 
 /// Синглтон для инициализации зависимостей
 /// и предоставления доступа к ним в приложении
@@ -31,8 +31,7 @@ class Depends {
     // Инициализируем контейнер зависимостей
     _httpClient = BaseHttpClient();
     // Инициализируем сервис для работы с локальным хранилищем
-    storageService = StorageService();
-    await storageService.init();
+    db = AppDatabase();
 
     // Инициализируем репозиторий таблицы лидеров
     leaderRepository = LeaderboardRepository(
@@ -44,7 +43,7 @@ class Depends {
     // для работы с локальным хранилищем
     _userRepository = UserRepository(
       httpClient: _httpClient,
-      storageService: storageService,
+      userLocalRepo: UserLocalRepo(db),
     );
 
     // Инициализируем менеджер состояния пользователя
@@ -52,7 +51,7 @@ class Depends {
     await userCubit.restoreUser();
   }
 
-  late final IStorageService storageService;
+  late final AppDatabase db;
 
   /// Интерфейс HTTP клиента
   late final IHttpClient _httpClient;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:tetris_flutter/app/http/i_http_client.dart';
-import 'package:tetris_flutter/app/storage/i_storage_service.dart';
+import 'package:tetris_flutter/features/user/data/local/user_local_repo.dart';
 
 import '../domain/i_user_repository.dart';
 import '../domain/user_entity.dart';
@@ -10,9 +10,9 @@ import 'user_dto.dart';
 /// Репозиторий для работы с пользователем
 final class UserRepository implements IUserRepository {
   final IHttpClient httpClient;
-  final IStorageService storageService;
+  final UserLocalRepo userLocalRepo;
 
-  UserRepository({required this.httpClient, required this.storageService});
+  UserRepository({required this.httpClient, required this.userLocalRepo});
 
   @override
   Future<UserEntity> createUser(String username) async {
@@ -45,10 +45,7 @@ final class UserRepository implements IUserRepository {
     }
     final userDto = UserDto.fromJson(resultJson);
     // Сохранение пользователя в локальном хранилище
-    await storageService.setString(
-      'user',
-      jsonEncode(userDto.toJson()),
-    );
+    await userLocalRepo.saveUser(userDto.toEntity());
     // Преобразование данных в список сущностей
     return userDto.toEntity();
   }
@@ -86,10 +83,7 @@ final class UserRepository implements IUserRepository {
     }
     final userDto = UserDto.fromJson(resultJson);
     // Сохранение пользователя в локальном хранилище
-    await storageService.setString(
-      'user',
-      jsonEncode(userDto.toJson()),
-    );
+    await userLocalRepo.saveUser(userDto.toEntity());
     // Преобразование данных в список сущностей
     return userDto.toEntity();
   }
@@ -97,21 +91,15 @@ final class UserRepository implements IUserRepository {
   @override
   Future<void> deleteUserFromStorage() async {
     // Очистка локального хранилища
-    await storageService.clear();
+    await userLocalRepo.clearUser();
   }
 
   @override
   Future<UserEntity?> getUserFromStorage() async {
     // Получение данных из локального хранилища
-    final userString = storageService.getString('user');
-    if (userString == null) {
-      return null;
-    }
+    final user = await userLocalRepo.getUser();
+
     // Преобразование данных в JSON
-    final userJson = json.decode(userString);
-    // Преобразование JSON в DTO
-    final userDto = UserDto.fromJson(userJson);
-    // Преобразование DTO в сущность
-    return userDto.toEntity();
+    return user;
   }
 }

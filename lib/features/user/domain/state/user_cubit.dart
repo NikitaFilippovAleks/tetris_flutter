@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../i_user_repository.dart';
@@ -7,11 +9,37 @@ import 'user_state.dart';
 /// и взаимодействия с удаленным репозиторием
 class UserCubit {
   final IUserRepository repository;
+  final StreamController<bool> isSentToServerStreamController =
+      StreamController<bool>();
 
-  UserCubit({required this.repository});
+  UserCubit({required this.repository}) {
+    isSentToServerStreamController.stream.listen((isSentToServer) async {
+      if (!isSentToServer) {
+        await Future.delayed(const Duration(seconds: 2), () async {
+          final localUser = await repository.getUserFromStorage();
+          if (localUser != null) {
+            final entity = await repository.createUserFromLocalStorage();
+            print('entity.isSentToServer: ${entity.isSentToServer}');
+            isSentToServerStreamController.add(entity.isSentToServer);
+          }
+        });
+      }
+    });
+
+    checkIsSentToServer();
+  }
 
   final ValueNotifier<UserState> stateNotifier =
       ValueNotifier(const UserInitState());
+  
+
+  checkIsSentToServer() async {
+    print('checkIsSentToServer');
+    final localUser = await repository.getUserFromStorage();
+    if (localUser != null) {
+      isSentToServerStreamController.add(localUser.isSentToServer);
+    }
+  }
 
   Future<void> createUser(String username) async {
     // Проверка состояния, если состояние загрузки, то не выполнять запрос
@@ -24,10 +52,13 @@ class UserCubit {
       // Создание пользователя
       // Если пользователь с таким именем уже существует,
       final entity = await repository.createUser(username);
+      isSentToServerStreamController.add(entity.isSentToServer);
       // Установка состояния успешной загрузки
       // и передача сущности пользователя
       emit(UserSuccessState(entity));
     } on Object catch (error, stackTrace) {
+      print('Error: $error');
+      print('Stack trace: $stackTrace');
       // Установка состояния ошибки
       // и передача сообщения об ошибке
       emit(UserErrorState('Ошибка создания пользователя',
@@ -44,6 +75,7 @@ class UserCubit {
     try {
       emit(const UserLoadingState());
       final entity = await repository.setScores(username, scores);
+      isSentToServerStreamController.add(entity.isSentToServer);
       emit(UserSuccessState(entity));
     } on Object catch (error, stackTrace) {
       emit(UserErrorState(

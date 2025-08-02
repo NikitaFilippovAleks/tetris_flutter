@@ -20,6 +20,7 @@ final class UserRepository implements IUserRepository {
     // Получаем данные от сервера или создаем пользователя
     // с id = 0 и score = 0
     late final Map<String, dynamic> resultJson;
+    var isSentToServer = false;
 
     // Получение данных
     try {
@@ -34,7 +35,9 @@ final class UserRepository implements IUserRepository {
         );
       }
       resultJson = json.decode(response.body);
+      isSentToServer = true;
     } on Object catch (_) {
+      print('Error: $_');
       // Если произошла ошибка, то создаем пользователя
       // с id = 0 и score = 0 и сохраняем его в локальном хранилище
       resultJson = {
@@ -45,9 +48,10 @@ final class UserRepository implements IUserRepository {
     }
     final userDto = UserDto.fromJson(resultJson);
     // Сохранение пользователя в локальном хранилище
-    await userLocalRepo.saveUser(userDto.toEntity());
+    await userLocalRepo.saveUser(userDto.toEntity(isSentToServer));
     // Преобразование данных в список сущностей
-    return userDto.toEntity();
+    final savedUser = await userLocalRepo.getUser();
+    return savedUser!;
   }
 
   @override
@@ -56,6 +60,7 @@ final class UserRepository implements IUserRepository {
     // Получаем данные от сервера или создаем пользователя
     // с id = 0 и score = 0
     late final Map<String, dynamic> resultJson;
+    var isSentToServer = false;
 
     try {
       final response = await httpClient.put(
@@ -72,6 +77,7 @@ final class UserRepository implements IUserRepository {
         );
       }
       resultJson = json.decode(response.body);
+      isSentToServer = true;
     } on Object catch (_) {
       // Если произошла ошибка, то
       // сохраняем его в локальном хранилище
@@ -83,9 +89,47 @@ final class UserRepository implements IUserRepository {
     }
     final userDto = UserDto.fromJson(resultJson);
     // Сохранение пользователя в локальном хранилище
-    await userLocalRepo.saveUser(userDto.toEntity());
+    await userLocalRepo.saveUser(userDto.toEntity(isSentToServer));
     // Преобразование данных в список сущностей
-    return userDto.toEntity();
+    final savedUser = await userLocalRepo.getUser();
+    return savedUser!;
+  }
+
+  createUserFromLocalStorage() async {
+    final user = await userLocalRepo.getUser();
+    late final Map<String, dynamic> resultJson;
+    var isSentToServer = false;
+
+    // Получение данных
+    try {
+      final response = await httpClient.post(
+        '/users/',
+        body: {"username": user?.username, "score": user?.score},
+      );
+      // Проверка статуса ответа
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Ошибка при создании пользователя: ${response.statusCode}',
+        );
+      }
+      resultJson = json.decode(response.body);
+      isSentToServer = true;
+    } on Object catch (_) {
+      print('Error: $_');
+      // Если произошла ошибка, то создаем пользователя
+      // с id = 0 и score = 0 и сохраняем его в локальном хранилище
+      resultJson = {
+        'id': 0,
+        'username': user?.username,
+        'score': user?.score,
+      };
+    }
+    final userDto = UserDto.fromJson(resultJson);
+    // Сохранение пользователя в локальном хранилище
+    await userLocalRepo.saveUser(userDto.toEntity(isSentToServer));
+    // Преобразование данных в список сущностей
+    final savedUser = await userLocalRepo.getUser();
+    return savedUser!;
   }
 
   @override

@@ -23,6 +23,16 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   late final GeneratedColumn<int> score = GeneratedColumn<int>(
       'score', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _isSentToServerMeta =
+      const VerificationMeta('isSentToServer');
+  @override
+  late final GeneratedColumn<bool> isSentToServer = GeneratedColumn<bool>(
+      'is_sent_to_server', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("is_sent_to_server" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
@@ -32,7 +42,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
   @override
-  List<GeneratedColumn> get $columns => [id, name, score, createdAt];
+  List<GeneratedColumn> get $columns =>
+      [id, name, score, isSentToServer, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -58,6 +69,12 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     } else if (isInserting) {
       context.missing(_scoreMeta);
     }
+    if (data.containsKey('is_sent_to_server')) {
+      context.handle(
+          _isSentToServerMeta,
+          isSentToServer.isAcceptableOrUnknown(
+              data['is_sent_to_server']!, _isSentToServerMeta));
+    }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
@@ -77,6 +94,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       score: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}score'])!,
+      isSentToServer: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}is_sent_to_server'])!,
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
     );
@@ -92,11 +111,13 @@ class User extends DataClass implements Insertable<User> {
   final int id;
   final String name;
   final int score;
+  final bool isSentToServer;
   final DateTime createdAt;
   const User(
       {required this.id,
       required this.name,
       required this.score,
+      required this.isSentToServer,
       required this.createdAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -104,6 +125,7 @@ class User extends DataClass implements Insertable<User> {
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
     map['score'] = Variable<int>(score);
+    map['is_sent_to_server'] = Variable<bool>(isSentToServer);
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
@@ -113,6 +135,7 @@ class User extends DataClass implements Insertable<User> {
       id: Value(id),
       name: Value(name),
       score: Value(score),
+      isSentToServer: Value(isSentToServer),
       createdAt: Value(createdAt),
     );
   }
@@ -124,6 +147,7 @@ class User extends DataClass implements Insertable<User> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       score: serializer.fromJson<int>(json['score']),
+      isSentToServer: serializer.fromJson<bool>(json['isSentToServer']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -134,15 +158,22 @@ class User extends DataClass implements Insertable<User> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'score': serializer.toJson<int>(score),
+      'isSentToServer': serializer.toJson<bool>(isSentToServer),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
-  User copyWith({int? id, String? name, int? score, DateTime? createdAt}) =>
+  User copyWith(
+          {int? id,
+          String? name,
+          int? score,
+          bool? isSentToServer,
+          DateTime? createdAt}) =>
       User(
         id: id ?? this.id,
         name: name ?? this.name,
         score: score ?? this.score,
+        isSentToServer: isSentToServer ?? this.isSentToServer,
         createdAt: createdAt ?? this.createdAt,
       );
   User copyWithCompanion(UsersCompanion data) {
@@ -150,6 +181,9 @@ class User extends DataClass implements Insertable<User> {
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       score: data.score.present ? data.score.value : this.score,
+      isSentToServer: data.isSentToServer.present
+          ? data.isSentToServer.value
+          : this.isSentToServer,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -160,13 +194,14 @@ class User extends DataClass implements Insertable<User> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('score: $score, ')
+          ..write('isSentToServer: $isSentToServer, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, score, createdAt);
+  int get hashCode => Object.hash(id, name, score, isSentToServer, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -174,6 +209,7 @@ class User extends DataClass implements Insertable<User> {
           other.id == this.id &&
           other.name == this.name &&
           other.score == this.score &&
+          other.isSentToServer == this.isSentToServer &&
           other.createdAt == this.createdAt);
 }
 
@@ -181,17 +217,20 @@ class UsersCompanion extends UpdateCompanion<User> {
   final Value<int> id;
   final Value<String> name;
   final Value<int> score;
+  final Value<bool> isSentToServer;
   final Value<DateTime> createdAt;
   const UsersCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.score = const Value.absent(),
+    this.isSentToServer = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
   UsersCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required int score,
+    this.isSentToServer = const Value.absent(),
     this.createdAt = const Value.absent(),
   })  : name = Value(name),
         score = Value(score);
@@ -199,12 +238,14 @@ class UsersCompanion extends UpdateCompanion<User> {
     Expression<int>? id,
     Expression<String>? name,
     Expression<int>? score,
+    Expression<bool>? isSentToServer,
     Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (score != null) 'score': score,
+      if (isSentToServer != null) 'is_sent_to_server': isSentToServer,
       if (createdAt != null) 'created_at': createdAt,
     });
   }
@@ -213,11 +254,13 @@ class UsersCompanion extends UpdateCompanion<User> {
       {Value<int>? id,
       Value<String>? name,
       Value<int>? score,
+      Value<bool>? isSentToServer,
       Value<DateTime>? createdAt}) {
     return UsersCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       score: score ?? this.score,
+      isSentToServer: isSentToServer ?? this.isSentToServer,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -234,6 +277,9 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (score.present) {
       map['score'] = Variable<int>(score.value);
     }
+    if (isSentToServer.present) {
+      map['is_sent_to_server'] = Variable<bool>(isSentToServer.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -246,6 +292,7 @@ class UsersCompanion extends UpdateCompanion<User> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('score: $score, ')
+          ..write('isSentToServer: $isSentToServer, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
@@ -519,12 +566,14 @@ typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   Value<int> id,
   required String name,
   required int score,
+  Value<bool> isSentToServer,
   Value<DateTime> createdAt,
 });
 typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<int> id,
   Value<String> name,
   Value<int> score,
+  Value<bool> isSentToServer,
   Value<DateTime> createdAt,
 });
 
@@ -544,6 +593,10 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
 
   ColumnFilters<int> get score => $composableBuilder(
       column: $table.score, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isSentToServer => $composableBuilder(
+      column: $table.isSentToServer,
+      builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnFilters(column));
@@ -567,6 +620,10 @@ class $$UsersTableOrderingComposer
   ColumnOrderings<int> get score => $composableBuilder(
       column: $table.score, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<bool> get isSentToServer => $composableBuilder(
+      column: $table.isSentToServer,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 }
@@ -588,6 +645,9 @@ class $$UsersTableAnnotationComposer
 
   GeneratedColumn<int> get score =>
       $composableBuilder(column: $table.score, builder: (column) => column);
+
+  GeneratedColumn<bool> get isSentToServer => $composableBuilder(
+      column: $table.isSentToServer, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -619,24 +679,28 @@ class $$UsersTableTableManager extends RootTableManager<
             Value<int> id = const Value.absent(),
             Value<String> name = const Value.absent(),
             Value<int> score = const Value.absent(),
+            Value<bool> isSentToServer = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
           }) =>
               UsersCompanion(
             id: id,
             name: name,
             score: score,
+            isSentToServer: isSentToServer,
             createdAt: createdAt,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             required String name,
             required int score,
+            Value<bool> isSentToServer = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
           }) =>
               UsersCompanion.insert(
             id: id,
             name: name,
             score: score,
+            isSentToServer: isSentToServer,
             createdAt: createdAt,
           ),
           withReferenceMapper: (p0) => p0

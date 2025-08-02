@@ -11,7 +11,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   /// Текущая версия базы данных
 
@@ -25,6 +25,10 @@ class AppDatabase extends _$AppDatabase {
         if (from < 2) {
           // Добавляем таблицу leaderboard если её нет
           await m.createTable(leaderboard);
+        }
+        if (from < 3) {
+          // Добавляем колонку isSentToServer в таблицу users
+          await m.addColumn(users, users.isSentToServer);
         }
       },
     );

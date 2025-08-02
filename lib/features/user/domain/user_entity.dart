@@ -13,12 +13,16 @@ class UserEntity with EqualsMixin {
   /// Лучший счет пользователя
   final int score;
 
+  /// Флаг отправки данных на сервер
+  final bool isSentToServer;
+
   const UserEntity({
     required this.id,
     required this.username,
     required this.score,
+    required this.isSentToServer,
   });
 
   @override
-  List<Object?> get fields => [id, username, score];
+  List<Object?> get fields => [id, username, score, isSentToServer];
 } 

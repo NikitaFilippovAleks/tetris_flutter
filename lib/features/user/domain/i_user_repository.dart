@@ -14,4 +14,7 @@ abstract interface class IUserRepository {
 
   /// Удаление пользователя из локального хранилища
   Future<void> deleteUserFromStorage();
+
+  /// Создание пользователя из локального хранилища
+  Future<UserEntity> createUserFromLocalStorage();
 } 

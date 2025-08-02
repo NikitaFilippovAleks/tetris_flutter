@@ -37,11 +37,12 @@ final class UserDto {
   }
 
   /// Преобразование DTO в сущность [UserEntity]
-  UserEntity toEntity() {
+  UserEntity toEntity(bool isSentToServer) {
     return UserEntity(
       id: id,
       username: username,
       score: score,
+      isSentToServer: isSentToServer,
     );
   }
 }

@@ -12,6 +12,7 @@ class UserLocalRepo {
           id: const Value(1),
           name: Value(user.username),
           score: Value(user.score),
+          isSentToServer: Value(user.isSentToServer),
         ));
   }
 
@@ -24,6 +25,7 @@ class UserLocalRepo {
       id: user.id,
       username: user.name,
       score: user.score,
+      isSentToServer: user.isSentToServer,
     );
   }
 

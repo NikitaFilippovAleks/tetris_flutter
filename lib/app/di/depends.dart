@@ -1,6 +1,7 @@
 import 'package:tetris_flutter/app/db/database.dart';
 import 'package:tetris_flutter/app/http/base_http_client.dart';
 import 'package:tetris_flutter/app/http/i_http_client.dart';
+import 'package:tetris_flutter/features/leaderboard/data/local/leaderboard_local_repo.dart';
 import 'package:tetris_flutter/features/user/data/local/user_local_repo.dart';
 
 import '../../features/leaderboard/data/leaderboard_repository.dart';
@@ -36,6 +37,7 @@ class Depends {
     // Инициализируем репозиторий таблицы лидеров
     leaderRepository = LeaderboardRepository(
       httpClient: _httpClient,
+      leaderboardLocalRepo: LeaderboardLocalRepo(db),
     );
 
     // Инициализируем репозиторий пользователя

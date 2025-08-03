@@ -3,6 +3,7 @@ import 'package:tetris_flutter/app/di/depends.dart';
 import 'package:tetris_flutter/app/di/di_container.dart';
 import 'package:tetris_flutter/app/game_router.dart';
 import 'package:tetris_flutter/features/leaderboard/presentation/leaderboard_screen.dart';
+import 'package:tetris_flutter/l10n/gen/app_localizations.dart';
 import 'package:tetris_flutter/models/settings_model.dart';
 import 'package:tetris_flutter/features/game/game_over_screen.dart';
 import 'package:tetris_flutter/features/game/game_screen.dart';
@@ -65,19 +66,55 @@ class AppError extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key, required this.depends});
 
   final Depends depends;
 
   @override
+  State<MyApp> createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  Locale _locale = const Locale('ru');
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocale();
+  }
+
+  Future<void> _loadLocale() async {
+    final storage = widget.depends.storageService;
+    final localeCode = storage.getString('locale') ?? 'ru';
+    setState(() {
+      _locale = Locale(localeCode);
+    });
+  }
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+    _saveLocale(locale.languageCode);
+  }
+
+  Future<void> _saveLocale(String localeCode) async {
+    final storage = widget.depends.storageService;
+    await storage.setString('locale', localeCode);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DiContainer(
-      depends: depends,
+      depends: widget.depends,
       child: SettingsProvider(
         notifier: SettingsModel(),
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
+            locale: _locale,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
             initialRoute: GameRouter.initialRoute,
             routes: GameRouter.appRoutes,
         ),

@@ -146,6 +146,12 @@ abstract class AppLocalizations {
   /// **'Russian'**
   String get russian;
 
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get score;
+
   /// Label for the start game button
   ///
   /// In en, this message translates to:
@@ -157,6 +163,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign out'**
   String get signOut;
+
+  /// Label for the username
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
 
   /// Label for the best result
   ///

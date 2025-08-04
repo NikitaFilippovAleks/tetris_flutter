@@ -35,10 +35,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get russian => 'Russian';
 
   @override
+  String get score => 'Score';
+
+  @override
   String get startGame => 'Start game';
 
   @override
   String get signOut => 'Sign out';
+
+  @override
+  String get username => 'Username';
 
   @override
   String yourBestResult(Object score) {

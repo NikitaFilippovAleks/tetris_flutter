@@ -35,6 +35,10 @@
   "@russian": {
     "description": "Name of Russian language"
   },
+  "score": "Score",
+  "@score": {
+    "description": ""
+  },
   "startGame": "Start game",
   "@startGame": {
     "description": "Label for the start game button"
@@ -42,6 +46,10 @@
   "signOut": "Sign out",
   "@signOut": {
     "description": "Label for the sign out button"
+  },
+  "username": "Username",
+  "@username": {
+    "description": "Label for the username"
   },
   "yourBestResult": "Your best result: {score}",
   "@yourBestResult": {

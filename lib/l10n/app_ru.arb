@@ -13,8 +13,10 @@
   "level": "Уровень",
   "english": "Английский",
   "russian": "Русский",
+  "score": "Очки",
   "startGame": "Начать игру",
   "signOut": "Выйти из аккаунта",
+  "username": "Имя пользователя",
   "yourBestResult": "Ваш лучший результат: {score}",
   "@yourBestResult": {
     "placeholders": {

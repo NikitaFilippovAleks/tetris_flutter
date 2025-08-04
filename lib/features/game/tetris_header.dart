@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tetris_flutter/app/utils.dart';
+import 'package:tetris_flutter/l10n/gen/app_localizations.dart';
 
 class TetrisHeader extends StatelessWidget {
   final int score;
@@ -14,6 +15,7 @@ class TetrisHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -31,11 +33,11 @@ class TetrisHeader extends StatelessWidget {
                   spacing: 10,
                   children: [
                     Text(
-                      'Score: $score',
+                      '${l10n.score}: $score',
                       style: const TextStyle(color: Colors.white),
                     ),
                     Text(
-                      'Level: $level',
+                      '${l10n.level}: $level',
                       style: const TextStyle(color: Colors.white),
                     ),
                   ],
@@ -43,7 +45,7 @@ class TetrisHeader extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Username: ${Utils.getUsername(context)}',
+                      '${l10n.username}: ${Utils.getUsername(context)}',
                       style: const TextStyle(color: Colors.white),
                     ),
                   ],

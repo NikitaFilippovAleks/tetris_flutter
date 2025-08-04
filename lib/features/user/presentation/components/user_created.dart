@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tetris_flutter/app/context_ext.dart';
 import 'package:tetris_flutter/app/game_router.dart';
+import 'package:tetris_flutter/l10n/gen/app_localizations.dart';
 
 import '../../domain/user_entity.dart';
 
@@ -17,12 +18,14 @@ class UserCreated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('Добро пожаловать, ${userEntity.username}!'),
+        Text(l10n.greetingUser(userEntity.username)),
         const SizedBox(height: 16),
-        Text('Ваш лучший результат: ${userEntity.score}'),
+        Text(l10n.yourBestResult(userEntity.score)),
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
@@ -33,7 +36,7 @@ class UserCreated extends StatelessWidget {
               GameRouter.gameRoute,
             );
           },
-          child: const Text('Начать игру'),
+          child: Text(l10n.startGame),
         ),
         const SizedBox(height: 16),
         ElevatedButton(
@@ -41,7 +44,7 @@ class UserCreated extends StatelessWidget {
             // Выход из аккаунта
             context.di.userCubit.signOut();
           },
-          child: const Text('Выйти из аккаунта'),
+          child: Text(l10n.signOut),
         ),
       ],
     );

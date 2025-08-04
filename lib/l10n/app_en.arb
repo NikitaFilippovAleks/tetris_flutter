@@ -1,12 +1,19 @@
 {
   "@@locale": "en",
-  "startGame": "Start Game",
-  "@startGame": {
-    "description": "Label for the start game button"
-  },
   "bestResults": "Best Results",
   "@bestResults": {
     "description": "Label for the best results button"
+  },
+  "blocksSelector": "Blocks selector",
+  "@blocksSelector": {
+    "description": "Label for the blocks selector"
+  },
+  "greetingUser": "Welcome, {username}!",
+  "@greetingUser": {
+    "description": "Greeting message for the user",
+    "placeholders": {
+      "username": {}
+    }
   },
   "settings": "Settings",
   "@settings": {
@@ -16,6 +23,10 @@
   "@language": {
     "description": "Label for language selection"
   },
+  "level": "Level",
+  "@level": {
+    "description": "Label for level selection"
+  },
   "english": "English",
   "@english": {
     "description": "Name of English language"
@@ -23,5 +34,20 @@
   "russian": "Russian",
   "@russian": {
     "description": "Name of Russian language"
+  },
+  "startGame": "Start game",
+  "@startGame": {
+    "description": "Label for the start game button"
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "Label for the sign out button"
+  },
+  "yourBestResult": "Your best result: {score}",
+  "@yourBestResult": {
+    "description": "Label for the best result",
+    "placeholders": {
+      "score": {}
+    }
   }
 }

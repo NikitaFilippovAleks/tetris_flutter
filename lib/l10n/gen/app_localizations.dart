@@ -98,17 +98,23 @@ abstract class AppLocalizations {
     Locale('ru')
   ];
 
-  /// Label for the start game button
-  ///
-  /// In en, this message translates to:
-  /// **'Start Game'**
-  String get startGame;
-
   /// Label for the best results button
   ///
   /// In en, this message translates to:
   /// **'Best Results'**
   String get bestResults;
+
+  /// Label for the blocks selector
+  ///
+  /// In en, this message translates to:
+  /// **'Blocks selector'**
+  String get blocksSelector;
+
+  /// Greeting message for the user
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, {username}!'**
+  String greetingUser(Object username);
 
   /// Label for the settings button
   ///
@@ -122,6 +128,12 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
+  /// Label for level selection
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get level;
+
   /// Name of English language
   ///
   /// In en, this message translates to:
@@ -133,6 +145,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Russian'**
   String get russian;
+
+  /// Label for the start game button
+  ///
+  /// In en, this message translates to:
+  /// **'Start game'**
+  String get startGame;
+
+  /// Label for the sign out button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// Label for the best result
+  ///
+  /// In en, this message translates to:
+  /// **'Your best result: {score}'**
+  String yourBestResult(Object score);
 }
 
 class _AppLocalizationsDelegate

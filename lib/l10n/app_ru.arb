@@ -1,9 +1,24 @@
 {
   "@@locale": "ru",
-  "startGame": "Начать игру",
   "bestResults": "Лучшие результаты",
+  "blocksSelector": "Выбор блоков",
+  "greetingUser": "Добро пожаловать, {username}!",
+  "@greetingUser": {
+    "placeholders": {
+      "username": {}
+    }
+  },
   "settings": "Настройки",
   "language": "Язык",
+  "level": "Уровень",
   "english": "Английский",
-  "russian": "Русский"
+  "russian": "Русский",
+  "startGame": "Начать игру",
+  "signOut": "Выйти из аккаунта",
+  "yourBestResult": "Ваш лучший результат: {score}",
+  "@yourBestResult": {
+    "placeholders": {
+      "score": {}
+    }
+  }
 }

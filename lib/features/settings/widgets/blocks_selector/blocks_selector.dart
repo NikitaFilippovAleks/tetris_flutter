@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tetris_flutter/models/settings_model.dart';
 import 'package:tetris_flutter/features/game/src/blocks/blocks.dart';
+import 'package:tetris_flutter/l10n/gen/app_localizations.dart';
+import 'package:tetris_flutter/models/settings_model.dart';
 import 'package:tetris_flutter/shared/block_painter.dart';
 
 part 'block_item.dart';
@@ -11,10 +12,12 @@ class BlocksSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settingsModel = SettingsProvider.of(context);
+    final l10n = AppLocalizations.of(context);
     return Column(
       spacing: 20,
       children: [
-        Text('Blocks selector', style: Theme.of(context).textTheme.titleLarge),
+        Text(l10n.blocksSelector,
+            style: Theme.of(context).textTheme.titleLarge),
         GridView.count(
           shrinkWrap: true,
           mainAxisSpacing: 10,

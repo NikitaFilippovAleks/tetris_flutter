@@ -9,10 +9,15 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get startGame => 'Начать игру';
+  String get bestResults => 'Лучшие результаты';
 
   @override
-  String get bestResults => 'Лучшие результаты';
+  String get blocksSelector => 'Выбор блоков';
+
+  @override
+  String greetingUser(Object username) {
+    return 'Добро пожаловать, $username!';
+  }
 
   @override
   String get settings => 'Настройки';
@@ -21,8 +26,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get language => 'Язык';
 
   @override
+  String get level => 'Уровень';
+
+  @override
   String get english => 'Английский';
 
   @override
   String get russian => 'Русский';
+
+  @override
+  String get startGame => 'Начать игру';
+
+  @override
+  String get signOut => 'Выйти из аккаунта';
+
+  @override
+  String yourBestResult(Object score) {
+    return 'Ваш лучший результат: $score';
+  }
 }

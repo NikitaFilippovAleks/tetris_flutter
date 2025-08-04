@@ -3,17 +3,18 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i7;
+import 'dart:async' as _i8;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:tetris_flutter/app/db/database.dart' as _i3;
-import 'package:tetris_flutter/app/di/depends.dart' as _i8;
+import 'package:tetris_flutter/app/di/depends.dart' as _i9;
+import 'package:tetris_flutter/app/storage/storage_service.dart' as _i4;
 import 'package:tetris_flutter/features/leaderboard/domain/i_leaderboard_repository.dart'
-    as _i4;
-import 'package:tetris_flutter/features/user/domain/i_user_repository.dart'
-    as _i6;
-import 'package:tetris_flutter/features/user/domain/state/user_cubit.dart'
     as _i5;
+import 'package:tetris_flutter/features/user/domain/i_user_repository.dart'
+    as _i7;
+import 'package:tetris_flutter/features/user/domain/state/user_cubit.dart'
+    as _i6;
 import 'package:tetris_flutter/features/user/domain/user_entity.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -50,9 +51,9 @@ class _FakeAppDatabase_1 extends _i1.SmartFake implements _i3.AppDatabase {
         );
 }
 
-class _FakeILeaderboardRepository_2 extends _i1.SmartFake
-    implements _i4.ILeaderboardRepository {
-  _FakeILeaderboardRepository_2(
+class _FakeStorageService_2 extends _i1.SmartFake
+    implements _i4.StorageService {
+  _FakeStorageService_2(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -61,8 +62,19 @@ class _FakeILeaderboardRepository_2 extends _i1.SmartFake
         );
 }
 
-class _FakeUserCubit_3 extends _i1.SmartFake implements _i5.UserCubit {
-  _FakeUserCubit_3(
+class _FakeILeaderboardRepository_3 extends _i1.SmartFake
+    implements _i5.ILeaderboardRepository {
+  _FakeILeaderboardRepository_3(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeUserCubit_4 extends _i1.SmartFake implements _i6.UserCubit {
+  _FakeUserCubit_4(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -74,15 +86,15 @@ class _FakeUserCubit_3 extends _i1.SmartFake implements _i5.UserCubit {
 /// A class which mocks [IUserRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIUserRepository extends _i1.Mock implements _i6.IUserRepository {
+class MockIUserRepository extends _i1.Mock implements _i7.IUserRepository {
   @override
-  _i7.Future<_i2.UserEntity> createUser(String? username) =>
+  _i8.Future<_i2.UserEntity> createUser(String? username) =>
       (super.noSuchMethod(
         Invocation.method(
           #createUser,
           [username],
         ),
-        returnValue: _i7.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
+        returnValue: _i8.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
           this,
           Invocation.method(
             #createUser,
@@ -90,17 +102,17 @@ class MockIUserRepository extends _i1.Mock implements _i6.IUserRepository {
           ),
         )),
         returnValueForMissingStub:
-            _i7.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
+            _i8.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
           this,
           Invocation.method(
             #createUser,
             [username],
           ),
         )),
-      ) as _i7.Future<_i2.UserEntity>);
+      ) as _i8.Future<_i2.UserEntity>);
 
   @override
-  _i7.Future<_i2.UserEntity> setScores(
+  _i8.Future<_i2.UserEntity> setScores(
     String? username,
     int? scores,
   ) =>
@@ -112,7 +124,7 @@ class MockIUserRepository extends _i1.Mock implements _i6.IUserRepository {
             scores,
           ],
         ),
-        returnValue: _i7.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
+        returnValue: _i8.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
           this,
           Invocation.method(
             #setScores,
@@ -123,7 +135,7 @@ class MockIUserRepository extends _i1.Mock implements _i6.IUserRepository {
           ),
         )),
         returnValueForMissingStub:
-            _i7.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
+            _i8.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
           this,
           Invocation.method(
             #setScores,
@@ -133,36 +145,36 @@ class MockIUserRepository extends _i1.Mock implements _i6.IUserRepository {
             ],
           ),
         )),
-      ) as _i7.Future<_i2.UserEntity>);
+      ) as _i8.Future<_i2.UserEntity>);
 
   @override
-  _i7.Future<_i2.UserEntity?> getUserFromStorage() => (super.noSuchMethod(
+  _i8.Future<_i2.UserEntity?> getUserFromStorage() => (super.noSuchMethod(
         Invocation.method(
           #getUserFromStorage,
           [],
         ),
-        returnValue: _i7.Future<_i2.UserEntity?>.value(),
-        returnValueForMissingStub: _i7.Future<_i2.UserEntity?>.value(),
-      ) as _i7.Future<_i2.UserEntity?>);
+        returnValue: _i8.Future<_i2.UserEntity?>.value(),
+        returnValueForMissingStub: _i8.Future<_i2.UserEntity?>.value(),
+      ) as _i8.Future<_i2.UserEntity?>);
 
   @override
-  _i7.Future<void> deleteUserFromStorage() => (super.noSuchMethod(
+  _i8.Future<void> deleteUserFromStorage() => (super.noSuchMethod(
         Invocation.method(
           #deleteUserFromStorage,
           [],
         ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 
   @override
-  _i7.Future<_i2.UserEntity> createUserFromLocalStorage() =>
+  _i8.Future<_i2.UserEntity> createUserFromLocalStorage() =>
       (super.noSuchMethod(
         Invocation.method(
           #createUserFromLocalStorage,
           [],
         ),
-        returnValue: _i7.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
+        returnValue: _i8.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
           this,
           Invocation.method(
             #createUserFromLocalStorage,
@@ -170,20 +182,20 @@ class MockIUserRepository extends _i1.Mock implements _i6.IUserRepository {
           ),
         )),
         returnValueForMissingStub:
-            _i7.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
+            _i8.Future<_i2.UserEntity>.value(_FakeUserEntity_0(
           this,
           Invocation.method(
             #createUserFromLocalStorage,
             [],
           ),
         )),
-      ) as _i7.Future<_i2.UserEntity>);
+      ) as _i8.Future<_i2.UserEntity>);
 }
 
 /// A class which mocks [Depends].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDepends extends _i1.Mock implements _i8.Depends {
+class MockDepends extends _i1.Mock implements _i9.Depends {
   @override
   _i3.AppDatabase get db => (super.noSuchMethod(
         Invocation.getter(#db),
@@ -198,30 +210,43 @@ class MockDepends extends _i1.Mock implements _i8.Depends {
       ) as _i3.AppDatabase);
 
   @override
-  _i4.ILeaderboardRepository get leaderRepository => (super.noSuchMethod(
-        Invocation.getter(#leaderRepository),
-        returnValue: _FakeILeaderboardRepository_2(
+  _i4.StorageService get storageService => (super.noSuchMethod(
+        Invocation.getter(#storageService),
+        returnValue: _FakeStorageService_2(
           this,
-          Invocation.getter(#leaderRepository),
+          Invocation.getter(#storageService),
         ),
-        returnValueForMissingStub: _FakeILeaderboardRepository_2(
+        returnValueForMissingStub: _FakeStorageService_2(
           this,
-          Invocation.getter(#leaderRepository),
+          Invocation.getter(#storageService),
         ),
-      ) as _i4.ILeaderboardRepository);
+      ) as _i4.StorageService);
 
   @override
-  _i5.UserCubit get userCubit => (super.noSuchMethod(
+  _i5.ILeaderboardRepository get leaderRepository => (super.noSuchMethod(
+        Invocation.getter(#leaderRepository),
+        returnValue: _FakeILeaderboardRepository_3(
+          this,
+          Invocation.getter(#leaderRepository),
+        ),
+        returnValueForMissingStub: _FakeILeaderboardRepository_3(
+          this,
+          Invocation.getter(#leaderRepository),
+        ),
+      ) as _i5.ILeaderboardRepository);
+
+  @override
+  _i6.UserCubit get userCubit => (super.noSuchMethod(
         Invocation.getter(#userCubit),
-        returnValue: _FakeUserCubit_3(
+        returnValue: _FakeUserCubit_4(
           this,
           Invocation.getter(#userCubit),
         ),
-        returnValueForMissingStub: _FakeUserCubit_3(
+        returnValueForMissingStub: _FakeUserCubit_4(
           this,
           Invocation.getter(#userCubit),
         ),
-      ) as _i5.UserCubit);
+      ) as _i6.UserCubit);
 
   @override
   set db(_i3.AppDatabase? _db) => super.noSuchMethod(
@@ -233,7 +258,16 @@ class MockDepends extends _i1.Mock implements _i8.Depends {
       );
 
   @override
-  set leaderRepository(_i4.ILeaderboardRepository? _leaderRepository) =>
+  set storageService(_i4.StorageService? _storageService) => super.noSuchMethod(
+        Invocation.setter(
+          #storageService,
+          _storageService,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set leaderRepository(_i5.ILeaderboardRepository? _leaderRepository) =>
       super.noSuchMethod(
         Invocation.setter(
           #leaderRepository,
@@ -243,7 +277,7 @@ class MockDepends extends _i1.Mock implements _i8.Depends {
       );
 
   @override
-  set userCubit(_i5.UserCubit? _userCubit) => super.noSuchMethod(
+  set userCubit(_i6.UserCubit? _userCubit) => super.noSuchMethod(
         Invocation.setter(
           #userCubit,
           _userCubit,
@@ -252,12 +286,12 @@ class MockDepends extends _i1.Mock implements _i8.Depends {
       );
 
   @override
-  _i7.Future<void> init() => (super.noSuchMethod(
+  _i8.Future<void> init() => (super.noSuchMethod(
         Invocation.method(
           #init,
           [],
         ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 }

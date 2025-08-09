@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tetris_flutter/app/game_router.dart';
+import 'package:tetris_flutter/features/user/presentation/user_screen.dart';
 import 'package:tetris_flutter/l10n/gen/app_localizations.dart';
 import 'package:tetris_flutter/main.dart';
 
@@ -18,7 +19,28 @@ class MainMenuScreen extends StatelessWidget {
           children: [
             FilledButton(
               onPressed: () {
-                Navigator.pushNamed(context, GameRouter.userRoute);
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => const UserScreen(),
+                    transitionDuration: const Duration(milliseconds: 1000),
+                    transitionsBuilder: (_, animation, __, child) {
+                      // Пример сдвига снизу вверх
+                      final offsetAnimation = Tween<double>(
+                        begin: 0,
+                        end: 1,
+                      ).animate(CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.bounceInOut,
+                      ));
+
+                      return ScaleTransition(
+                        scale: offsetAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
               },
               child: Text(l10n.startGame),
             ),

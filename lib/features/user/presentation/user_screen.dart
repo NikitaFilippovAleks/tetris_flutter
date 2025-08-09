@@ -29,6 +29,8 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.pink[100],
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Center(
